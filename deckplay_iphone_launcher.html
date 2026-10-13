@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<title>DeckPlay — Pocket Gaming</title>
+<style>
+:root{--bg:#07111f;--panel:#101e31;--panel2:#16263b;--line:#28496c;--text:#f2f7ff;--muted:#9eb2cc;--mint:#72f5bc;--blue:#168cff}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(ellipse at top,#142d4c 0,#07111f 58%);color:var(--text);font:16px system-ui,-apple-system,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+button,input{font:inherit} button{cursor:pointer}
+header{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;background:#07111feF;border-bottom:1px solid #203b5b;backdrop-filter:blur(18px)}
+.brand{font-weight:900;font-size:22px;letter-spacing:-.6px}.brand span{color:#49b6ff}.tag{font-size:11px;color:var(--muted)}
+main{max-width:1100px;margin:auto;padding:16px}
+nav{display:flex;gap:8px;overflow:auto;padding:8px 0 16px;scrollbar-width:none}
+nav button,.chip{white-space:nowrap;border:1px solid var(--line);background:#102039;color:#dceaff;border-radius:999px;padding:9px 14px}
+nav button.active,.primary{background:var(--mint);color:#07111f;border-color:var(--mint);font-weight:800}
+h1{font-size:28px;line-height:1.08;margin:12px 0 8px}h2{font-size:19px;margin:0 0 12px}h3{font-size:16px;margin:0 0 6px}
+p{line-height:1.45}.muted{color:var(--muted);font-size:13px}
+.hero{border:1px solid #32618c;border-radius:22px;padding:22px;background:linear-gradient(120deg,#163e5b,#13243c 55%,#251e4d);min-height:185px;display:flex;flex-direction:column;justify-content:end;overflow:hidden}
+.hero .eyebrow{color:var(--mint);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.3px}.hero h2{font-size:25px;margin:8px 0}.actions{display:flex;gap:9px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:#172c47;color:var(--text);font-weight:700}.btn.primary{background:var(--mint);color:#06111d;border-color:var(--mint)}
+.section{margin-top:24px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{min-width:0;border:1px solid var(--line);border-radius:16px;padding:14px;background:linear-gradient(150deg,#13243a,#0c192a)}
+.cover{height:90px;border-radius:11px;margin-bottom:12px;display:flex;align-items:end;padding:10px;font-weight:900;font-size:18px;letter-spacing:-.5px;background:linear-gradient(135deg,#285c72,#132c48)}
+.cover.purple{background:linear-gradient(135deg,#5b2e8d,#211b47)}.cover.green{background:linear-gradient(135deg,#236f60,#15352e)}.cover.gold{background:linear-gradient(135deg,#96703b,#392c23)}.cover.red{background:linear-gradient(135deg,#9a3c39,#3e1b2b)}
+.card .btn{width:100%;margin-top:10px}
+input{width:100%;background:#0b192a;border:1px solid var(--line);border-radius:12px;color:white;padding:13px;margin:6px 0 12px;outline:none}
+.row{display:flex;gap:10px;align-items:center}.row>*{min-width:0}.service-icon{width:42px;height:42px;border-radius:12px;background:#1d3652;display:grid;place-items:center;font-size:21px;flex-shrink:0}
+.listitem{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #233c59}.listitem:last-child{border:0}.listitem .btn{margin-left:auto}
+.hidden{display:none!important}
+.pad{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.padside{background:#0b1727;border:1px solid var(--line);border-radius:18px;padding:14px;text-align:center}
+.dpad{display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(3,38px);gap:4px;justify-content:center;margin:12px auto}
+.padkey{background:#203650;border:1px solid #456483;color:white;border-radius:9px;min-height:34px}
+.stick{width:68px;height:68px;border-radius:50%;border:2px solid #526e8d;background:radial-gradient(circle,#294564,#0c192a);margin:12px auto}
+.face{display:grid;grid-template-columns:repeat(2,38px);gap:6px;justify-content:center;margin:12px auto}.face button{border-radius:50%;height:38px;padding:0;background:#183d54}
+footer{padding:28px 8px;color:var(--muted);font-size:12px;text-align:center}
+.notice{padding:12px;border-radius:12px;background:#12283b;border:1px solid #28496c;color:#c8d9ed;font-size:13px;line-height:1.5}
+@media(min-width:700px){main{padding:22px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.cover{height:125px}.hero{min-height:240px;padding:30px}.hero h2{font-size:32px}}
+@media(max-width:360px){main{padding:12px}.grid{gap:8px}.card{padding:10px}.cover{height:74px;font-size:15px}.pad{gap:8px}}
+</style>
+</head>
+<body>
+<header><div><div class="brand">🎮 Deck<span>Play</span></div><div class="tag">PC gaming dashboard for iPhone</div></div><button class="btn" onclick="showPage('settings')">⚙</button></header>
+<main>
+<nav aria-label="Main navigation">
+<button class="active" data-page="home" onclick="showPage('home')">⌂ Home</button>
+<button data-page="library" onclick="showPage('library')">▤ Library</button>
+<button data-page="cloud" onclick="showPage('cloud')">☁ Cloud</button>
+<button data-page="stores" onclick="showPage('stores')">▣ Stores</button>
+<button data-page="controller" onclick="showPage('controller')">🎮 Controller</button>
+</nav>
+
+<section id="page-home" class="page">
+<div class="hero"><div class="eyebrow">Your pocket gaming hub</div><h2>Play more. Carry less.</h2><p class="muted">A Steam Deck-inspired launcher for your iPhone. No PC required for supported cloud games.</p><div class="actions"><button class="btn primary" onclick="showPage('cloud')">Explore cloud gaming ↗</button><button class="btn" onclick="showPage('library')">My library</button></div></div>
+<div class="section"><h2>Start playing</h2><div class="grid">
+<article class="card"><div class="cover green">GEFORCE NOW</div><h3>GeForce NOW</h3><p class="muted">Stream supported games you own.</p><button class="btn primary" onclick="openLink('https://play.geforcenow.com/')">Open service ↗</button></article>
+<article class="card"><div class="cover purple">XBOX CLOUD</div><h3>Xbox Cloud Gaming</h3><p class="muted">Check free-to-play availability.</p><button class="btn primary" onclick="openLink('https://www.xbox.com/nl-BE/cloud-gaming')">Open service ↗</button></article>
+<article class="card"><div class="cover gold">GAME STORES</div><h3>Discover games</h3><p class="muted">Browse Steam, Epic and GOG.</p><button class="btn" onclick="showPage('stores')">Browse stores</button></article>
+</div></div>
+<div class="section notice"><strong>Important:</strong> DeckPlay is a launcher, not a PC emulator or cloud server. Only games supported by each streaming provider can be played. Free tiers may have queues, session limits or catalogue restrictions.</div>
+</section>
+
+<section id="page-library" class="page hidden">
+<h1>My Library</h1><p class="muted">Search this sample list. These are shortcuts, not proof that each title is currently streamable.</p>
+<input id="search" placeholder="Search games or services…" oninput="renderLibrary()" aria-label="Search games">
+<div id="game-list" class="grid"></div>
+</section>
+
+<section id="page-cloud" class="page hidden">
+<h1>Cloud Gaming</h1><p class="muted">Choose a service and check its current supported games and free-plan terms.</p>
+<div class="section card"><div class="row"><div class="service-icon">🟩</div><div><h3>GeForce NOW</h3><div class="muted">Steam and other supported PC storefronts</div></div></div><p class="muted">Link a store account inside the official service, then select a supported game. Not every Steam game is available.</p><button class="btn primary" onclick="openLink('https://play.geforcenow.com/')">Launch GeForce NOW ↗</button></div>
+<div class="section card"><div class="row"><div class="service-icon">🟢</div><div><h3>Xbox Cloud Gaming</h3><div class="muted">Selected games and supported plans</div></div></div><p class="muted">Check the Belgian Xbox page for games playable without a paid subscription; eligibility can change.</p><button class="btn primary" onclick="openLink('https://www.xbox.com/nl-BE/cloud-gaming')">Launch Xbox Cloud ↗</button></div>
+<div class="section notice">Other cloud gaming services may require subscriptions. A game store alone does not run PC games on an iPhone.</div>
+</section>
+
+<section id="page-stores" class="page hidden">
+<h1>Stores</h1><p class="muted">Browse or manage your PC game accounts. Purchases and store pages do not automatically make a game playable on iOS.</p>
+<div class="listitem"><div class="service-icon">♟</div><div><h3>Steam</h3><div class="muted">PC game library</div></div><button class="btn" onclick="openLink('https://store.steampowered.com/')">Open ↗</button></div>
+<div class="listitem"><div class="service-icon">🛡</div><div><h3>Epic Games Store</h3><div class="muted">Free games and PC titles</div></div><button class="btn" onclick="openLink('https://store.epicgames.com/')">Open ↗</button></div>
+<div class="listitem"><div class="service-icon">◇</div><div><h3>GOG</h3><div class="muted">PC game store</div></div><button class="btn" onclick="openLink('https://www.gog.com/')">Open ↗</button></div>
+</section>
+
+<section id="page-controller" class="page hidden">
+<h1>Controller layout</h1><p class="muted">Visual mockup only. These buttons do not control a streamed game. Connect a supported Bluetooth controller or use the controls offered by the game service.</p>
+<div class="pad">
+<div class="padside"><h3>D-pad</h3><div class="dpad"><span></span><button class="padkey">▲</button><span></span><button class="padkey">◀</button><button class="padkey">●</button><button class="padkey">▶</button><span></span><button class="padkey">▼</button><span></span></div><div class="stick"></div><div class="muted">Left stick</div></div>
+<div class="padside"><h3>Action buttons</h3><div class="face"><button class="padkey">Y</button><button class="padkey">X</button><button class="padkey">B</button><button class="padkey">A</button></div><div class="stick"></div><div class="muted">Right stick</div></div>
+</div>
+<div class="section notice">For best results, pair a compatible Bluetooth controller in iPhone Settings → Bluetooth, then use the controls in the cloud gaming service.</div>
+</section>
+
+<section id="page-settings" class="page hidden">
+<h1>Settings</h1><div class="card"><h3>About DeckPlay</h3><p class="muted">A free, standalone HTML launcher prototype. It does not collect accounts, passwords or game data.</p><button class="btn" onclick="showPage('home')">Back to Home</button></div>
+<div class="section notice">Use only official service links. Never enter your Steam password into an unofficial launcher page.</div>
+</section>
+<footer>DeckPlay prototype · Independent project · Not affiliated with Valve, NVIDIA, Microsoft, Epic or GOG.</footer>
+</main>
+<script>
+const games=[
+{name:"Fortnite",store:"Epic / Xbox Cloud",style:"purple",url:"https://www.xbox.com/nl-BE/cloud-gaming"},
+{name:"Steam library",store:"GeForce NOW",style:"green",url:"https://play.geforcenow.com/"},
+{name:"Free PC games",store:"Epic Games Store",style:"gold",url:"https://store.epicgames.com/"},
+{name:"GOG collection",store:"GOG",style:"red",url:"https://www.gog.com/"},
+{name:"Supported PC titles",store:"GeForce NOW",style:"",url:"https://play.geforcenow.com/"},
+{name:"Free-to-play games",store:"Xbox Cloud Gaming",style:"green",url:"https://www.xbox.com/nl-BE/cloud-gaming"}
+];
+function openLink(url){window.location.href=url}
+function showPage(page){
+ document.querySelectorAll('.page').forEach(s=>s.classList.add('hidden'));
+ const el=document.getElementById('page-'+page); if(el)el.classList.remove('hidden');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderLibrary(){
+ const q=document.getElementById('search').value.toLowerCase();
+ const root=document.getElementById('game-list');root.replaceChildren();
+ games.filter(g=>(g.name+' '+g.store).toLowerCase().includes(q)).forEach(g=>{
+  const c=document.createElement('article');c.className='card';
+  const cover=document.createElement('div');cover.className='cover '+g.style;cover.textContent=g.name;
+  const title=document.createElement('h3');title.textContent=g.name;
+  const meta=document.createElement('p');meta.className='muted';meta.textContent=g.store;
+  const btn=document.createElement('button');btn.className='btn primary';btn.textContent='Open service ↗';btn.onclick=()=>openLink(g.url);
+  c.append(cover,title,meta,btn);root.append(c);
+ });
+}
+renderLibrary();
+</script>
+</body>
+</html>
